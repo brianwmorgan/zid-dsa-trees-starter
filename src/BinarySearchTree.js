@@ -120,7 +120,8 @@ class BinarySearchTree {
 
   // HELPER FUNCTIONS FOR 'REMOVE()' METHOD //
 
-  // '_replaceWith()' explanation:
+  // '_REPLACEWITH()' EXPLANATION //
+
   // '_replaceWith()' is used to find the node you want to use to replace a node that has children.
   // If the node that you are replacing has a parent, then you need to wire up the references from the parent to the replacement node, and the replacement node back to the parent.
   // Otherwise, if the node is a root node, then you simply copy over the properties of the replacement node.
@@ -151,7 +152,8 @@ class BinarySearchTree {
     }
   }
 
-  // '_findMin()' explanation:
+  // '_FINDMIN()' EXPLANATION //
+
   // '_findMin()' is used to find the minimum value from the right subtree.
   // When you are removing a node from the tree that has two children, you want to replace the node with the smallest node from the right subtree.
 
@@ -161,4 +163,90 @@ class BinarySearchTree {
     }
     return this.left._findMin();
   }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // DEPTH-FIRST SEARCH //
+
+  // Depth-first search (DFS) is an algorithm for traversing or searching a tree.
+  // It's typically implemented recursively.
+  // You can use DFS to search a tree using in-order, pre-order, or post-order traversals
+  // Each traversal will process the nodes in a different order. The sections below explore each of these traversals.
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // IN-ORDER TRAVERSALS //
+
+  // In-order traversal means that the left branch of the node is visited, then the current node is handled, and then the right branch is visited.
+
+  // This method accepts 'values' as a parameter, defaulted to an empty array, which is where the values of the processed nodes will be stored.
+  dfsInOrder(values = []) {
+    // First, process the left child node recursively
+    if (this.left) {
+      values = this.left.dfsInOrder(values);
+    }
+
+    // Next, process the current node
+    values.push(this.value);
+
+    // Next, process the right child node recursively
+    if (this.right) {
+      values = this.right.dfsInOrder(values);
+    }
+
+    // Return the 'values' array
+    return values;
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // PRE-ORDER TRAVERSALS //
+
+  // Pre-order traversal means that the current node is handled first, then the left branch of the node is visited, and then the right branch is visited.
+
+  // This method accepts 'values' as a parameter, defaulted to an empty array, which is where the values of the processed nodes will be stored.
+  dfsPreOrder(values = []) {
+    // First, process the current node
+    values.push(this.value);
+
+    // Next, process the left child node recursively
+    if (this.left) {
+      values = this.left.dfsPreOrder(values);
+    }
+
+    // Next, process the right child node recursively
+    if (this.right) {
+      values = this.right.dfsPreOrder(values);
+    }
+
+    // Return the 'values' array
+    return values;
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // POST-ORDER TRAVERSALS //
+
+  // Post-order traversal means that the left branch of the node is visited, then the right branch is visited, and then the current node is handled last.
+
+  // This method accepts 'values' as a parameter, defaulted to an empty array, which is where the values of the processed nodes will be stored.
+  dfsPostOrder(values = []) {
+    // First, process the left child node recursively
+    if (this.left) {
+      values = this.left.dfsPostOrder(values);
+    }
+
+    // Next, process the right child node recursively
+    if (this.right) {
+      values = this.right.dfsPostOrder(values);
+    }
+
+    // Next, process the current node
+    values.push(this.value);
+
+    // Return the 'values array
+    return values;
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

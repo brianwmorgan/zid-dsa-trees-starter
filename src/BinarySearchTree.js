@@ -291,4 +291,105 @@ class BinarySearchTree {
     // When all the nodes have been processed (the queue is empty), return the final output of the 'values' array
     return values;
   }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // SOLVING PROBLEMS WITH TREES //
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // PROBLEM #1 - FIND THE HEIGHT OF A GIVEN BST //
+
+  // Challenge: Write an algorithm to find the height of a BST.
+  // The height of a binary tree is equal to the number of edges between the root and the deepest node in the tree that has no children (the leaf node).
+
+  // Solution: You can follow a recursive approach to solve this problem.
+  // You can calculate the height for the current node, and then pass the height down as a variable to the left and right child nodes so they can evaluate their heights.
+  // After traversing the entire tree, the variable will contain the result.
+
+  // this method accepts a parameter 'currentHeight' that keeps track of the height of the current node (defaulted to '0')
+  getHeight(currentHeight = 0) {
+    // BASE CASE: If the current node doesn't have a left or right child, then the base case is reached, and the function can return the height.
+    if (!this.left && !this.right) return currentHeight;
+
+    // RECURSIVE CASES: Otherwise, use recursion by compute the new height.
+
+    // First, a 'newHeight' is computed by adding '1' to the 'currentHeight'
+    const newHeight = currentHeight + 1;
+
+    // If there's no left child, recurse down the right subtree only, passing down the height of the current node.
+    if (!this.left) return this.right.getHeight(newHeight);
+
+    // Similarly, ff there's no right child, recurse down the left subtree only, passing down the height of the current node.
+    if (!this.right) return this.left.getHeight(newHeight);
+
+    // If both children exist, recurse down both subtrees, passing down the height of the current node.
+    const leftHeight = this.left.getHeight(newHeight);
+    const rightHeight = this.right.getHeight(newHeight);
+
+    // Laslty, return the greater of the left or right subtree heights using 'Math.max()'.
+    return Math.max(leftHeight, rightHeight);
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // PROBLEM #2 - IS A GIVEN BINARY TREE A BST? //
+
+  // Challenge: Write an algorithm to check whether an arbitrary binary tree is a BST, assuming that the tree doesn't contain duplicates.
+
+  // Solution: You can make use of an "in-order" traversal depth-first search to solve this problem.
+  // An "in-order" traversal of a BST generates a sorted array as an output.
+  // Therefore, to check if a given binary tree is a BST, you can traverse the binary tree in order and ...
+  // ... compare each current node's value to the previously visited node's value.
+  // If the current node's value is always greater than the previously visited node's value, then the binary tree is a BST.
+
+  isBST() {
+    // Use the existing `dfsInOrder()` method to traverse the tree.
+    // This method returns an array of visited nodes, which we will store in a variable called 'values'.
+    const values = this.dfsInOrder();
+
+    // Check if the array returned by the in-order DFS is a sorted array.
+    for (let i = 1; i < values.length; i++) {
+      // Compare the current and previous values.
+      // If the current value is less than the previous value...
+      if (values[i] < values[i - 1]) {
+        // it is not a BST, so return 'false'.
+        return false;
+      }
+    }
+    // Otherwise, it is a BST, so return 'true'.
+    return true;
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // PROBLEM #3 - FIND THE THIRD-LARGEST NODE IN A BST //
+
+  // Challenge: Write an algorithm that finds the third-largest node in a given BST.
+
+  // Solution: You can make use of an "in-order" traversal depth-first search to solve this problem.
+  // Again, you know that an in-order traversal of a BST would generate a sorted array as an output.
+  // In fact, as a general rule, you can find the index position of the 'kth' largest node by subtracting 'k' from the length of the array.
+
+  // This method accepts an integer 'k' as a parameter, which is the 'kth'-largest node we want to find.
+  findKthLargestValue(k) {
+    // Use the existing `dfsInOrder()` method to traverse the tree and collect the values into an array, which we will store in a variable, 'values'.
+    const values = this.dfsInOrder();
+
+    // Next, the index position of the 'kth'-largest node is computer by subtracting 'k' from the lenghth of the 'values' array.
+    const kthIndex = values.length - k;
+
+    // Ensure that the 'kth' index is within the bounds of the array.
+    // If it is, ...
+    if (kthIndex >= 0) {
+      // ... return the value from the 'values' array at the 'kth' index ...
+      return values[kthIndex];
+    } else {
+      // ... othewise, return an appropriate error message.
+      console.error("k value exceeds the size of the BST.");
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+  }
 }

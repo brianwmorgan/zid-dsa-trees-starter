@@ -1,3 +1,6 @@
+// IMPORT THE 'QUEUE' CLASS //
+const Queue = require("./Queue");
+
 // 'BST' CLASS DEFINITION //
 
 class BinarySearchTree {
@@ -166,7 +169,7 @@ class BinarySearchTree {
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // DEPTH-FIRST SEARCH //
+  // DEPTH-FIRST SEARCH (DFS) //
 
   // Depth-first search (DFS) is an algorithm for traversing or searching a tree.
   // It's typically implemented recursively.
@@ -249,4 +252,43 @@ class BinarySearchTree {
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // BREADTH-FIRST SEARCH (BFS) //
+
+  // Breadth-first search (BFS) works across the rows of a tree.
+  // In other words, the top row will be handled first, followed by the second row, and so on and so forth.
+  // The tree is visited level by level. To implement a BFS algorithm, you need a first-in, first-out (FIFO) queue.
+  // When you visit a node, you add it to the queue.
+  // When all the nodes in the current level have been added to the queue, they are processed according to their order in the queue.
+  // The nodes are then removed from the queue. Then their children are visited, adding more values onto the queue.
+  // This process continues until all the nodes in the tree have been visited.
+
+  // This method accepts two parameters:
+  // (1.) 'tree', which is the node where we want to begin the tree transversal.
+  // (2.) 'values', defaulted to an empty array, which is where the values of the processed nodes will be stored.
+  bfs(tree, values = []) {
+    // Initialize a new queue called 'queue'
+    const queue = new Queue();
+    // Start the traversal at the tree and add the tree node to the queue to kick off the BFS
+    queue.enqueue(tree);
+    // The node is removed from the queue to be processed (stored in a variable called 'node')
+    let node = queue.dequeue();
+    // Begin a 'while' loop to process removed nodes
+    while (node) {
+      // In each iteration of the loop, add that node value from the queue to an array (as long as it exists / is defined)
+      values.push(node.value);
+      // Add the left child to the queue (if it exists)
+      if (node.left) {
+        queue.enqueue(node.left);
+      }
+      // Add the right child to the queue (if it exists)
+      if (node.right) {
+        queue.enqueue(node.right);
+      }
+      // Set the 'node' to the next node we want to process from the queue
+      node = queue.dequeue();
+    }
+    // When all the nodes have been processed (the queue is empty), return the final output of the 'values' array
+    return values;
+  }
 }
